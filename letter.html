@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carta de Amor</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background: linear-gradient(135deg, #FFB6C1, #FFC0CB);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .container {
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px;
+      width: 80%;
+      max-width: 800px;
+      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      height: 80vh;
+      overflow-y: auto;
+      display: none; /* Oculto inicialmente */
+    }
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    h1 {
+      color: #e74c3c;
+      font-size: 3.5em;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+      text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+    }
+    p {
+      line-height: 1.8;
+      font-size: 1.2em;
+      color: #333;
+      margin-bottom: 20px;
+      text-align: justify;
+    }
+    .signature {
+      font-size: 1.3em;
+      font-style: italic;
+      text-align: right;
+      margin-top: 30px;
+    }
+    /* Sobre para abrir la carta */
+    .gift-box {
+      background-color: #f39c12;
+      width: 150px;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+    .gift-box:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+    .gift-box:before {
+      content: "📩";
+      font-size: 80px;
+      color: white;
+    }
+    /* Regalito dentro de la carta */
+    .gift-inside {
+      background-color: #f39c12;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 20px auto;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+    .gift-inside:hover {
+      transform: scale(1.1);
+    }
+    .gift-inside:before {
+      content: "🎁";
+      font-size: 50px;
+      color: white;
+    }
+    /* Corazones y rosas */
+    .heart, .rose {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      animation: popUp 1s ease-out forwards;
+    }
+    @keyframes popUp {
+      0% {
+        transform: scale(0);
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.5);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1);
+      }
+    }
+    .rose {
+      font-size: 40px;
+      color: #e74c3c;
+    }
+    .heart {
+      color: #d9534f;
+      font-size: 40px;
+    }
+    .rose, .heart {
+      transition: transform 0.5s ease;
+    }
+    /* Contador de aniversario */
+    .countdown {
+      font-size: 1.5em;
+      margin-top: 20px;
+      color: #333;
+    }
+    .countdown-title {
+      font-size: 1.8em;
+      color: #e74c3c;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sobre para abrir la carta -->
+  <div class="gift-box" onclick="openLetter()"></div>
+
+  <!-- Carta oculta -->
+  <div class="container" id="letter">
+    <h1>FELIZ 16 DE FEBRERO!!</h1>
+    <p>
+      Desde el primer momento en que llegaste,
+      supe que mi vida iba a cambiar.
+      No soy el más romántico, lo sé, perdoname bb
+      cada día intento encontrar una nueva forma de mostrarte lo que eres para mí, mi todo.
+      Mi amor por ti es profundo y real, va más allá de cualquier límite,
+      y aunque a veces no se ve en grandes gestos,
+      crece en cada momento que compartimos.
+    </p>
+    <p>
+      Sé que las palabras no siempre alcanzan,
+      pero con mis acciones intento construir un amor que trascienda.
+      No busco hacer promesas vacías,
+      solo vivir un día a la vez,
+      con la certeza de que, juntos, todo es posible, de que juntos lograremos cualquier cosa. ERES MI TODO.
+    </p>
+    <p class="signature">
+      Con todo mi cariño,
+      <br> Tú uzzielillo
+    </p>
+    <iframe src="https://open.spotify.com/intl-es/track/6kdCN6gTWLcLxmLXoUcwuI?si=a3a6379f063e4e5c" width="300" height="80" frameborder="0" allow="encrypted-media" autoplay="true"></iframe>
+
+    <!-- Contador de aniversario -->
+    <div class="countdown-title">Nuestro Aniversario</div>
+    <div class="countdown" id="countdown"></div>
+
+    <!-- Regalito para activar los corazones y rosas -->
+    <div class="gift-inside" onclick="showLove()"></div>
+  </div>
+
+  <script>
+    function openLetter() {
+      // Ocultar el sobre
+      document.querySelector('.gift-box').style.display = 'none';
+
+      // Mostrar la carta y aplicar la animación slideIn
+      const letter = document.getElementById('letter');
+      letter.style.display = 'block';
+      letter.style.animation = 'slideIn 1s forwards';
+    }
+
+    function showLove() {
+      // Crear corazones
+      for (let i = 0; i < 10; i++) {
+        let heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "❤️";
+        heart.style.left = Math.random() * window.innerWidth + "px";
+        heart.style.top = Math.random() * window.innerHeight + "px";
+        heart.style.fontSize = Math.random() * 30 + 30 + "px";
+        document.body.appendChild(heart);
+        setTimeout(() => {
+          heart.style.animation = "popUp 1s ease-out forwards";
+        }, 50);
+      }
+
+      // Crear rosas
+      for (let i = 0; i < 5; i++) {
+        let rose = document.createElement("div");
+        rose.classList.add("rose");
+        rose.innerHTML = "🌹";
+        rose.style.left = Math.random() * window.innerWidth + "px";
+        rose.style.top = Math.random() * window.innerHeight + "px";
+        rose.style.fontSize = Math.random() * 40 + 40 + "px";
+        document.body.appendChild(rose);
+        setTimeout(() => {
+          rose.style.animation = "popUp 1s ease-out forwards";
+        }, 50);
+      }
+    }
+
+    // Función para calcular la cuenta regresiva
+    function updateCountdown() {
+      const anniversaryDate = new Date("2025-08-23T00:00:00");
+      const now = new Date();
+      const timeDifference = anniversaryDate - now;
+
+      if (timeDifference <= 0) {
+        document.getElementById("countdown").innerHTML = "¡Feliz Aniversario, amor! 💕";
+        return;
+      }
+
+      const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+      document.getElementById("countdown").innerHTML =
+        `Faltan ${days} días, ${hours} horas, ${minutes} minutos y ${seconds} segundos para nuestro aniversario.`;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
